@@ -30,8 +30,13 @@ public class EmailSimilarity extends Similarable{
     }
 
     public static void main(String[] args) {
-        EmailSimilarity x = new EmailSimilarity("sshankar@yahoo.com");
-        EmailSimilarity y = new EmailSimilarity("sivashankar@gmail.com");
+
+        String a = "sshankar@yahoo.com";
+        String b = "sivashankar@gmail.com";
+        System.err.println("Emails to compare --> " + a + " -VS- " + b);
+        System.err.println();
+        EmailSimilarity x = new EmailSimilarity(a);
+        EmailSimilarity y = new EmailSimilarity(b);
         System.err.println ("Score = " + x.similarTo(y));
     }
 }

@@ -30,8 +30,12 @@ public class AddressSimilarity extends Similarable{
     }
 
     public static void main(String[] args) {
-        AddressSimilarity x = new AddressSimilarity("h.no 23, Mahatma gandi road, Indira nagar, Near Bus Stop, Bangalore-78");
-        AddressSimilarity y = new AddressSimilarity("house no 23, M Gandhi Road, Nehru Colony, Indiraa nagar, Bangalore");
+        String a = "h.no 23, Mahatma gandi road, Indira nagar, Near Bus Stop, Bangalore-78";
+        String b = "house no 23, M Gandhi Road, Nehru Colony, Indiraa nagar, Bangalore";
+        System.err.println("Addresses to compare --> " + a + " -VS- " + b);
+        System.err.println();
+        AddressSimilarity x = new AddressSimilarity(a);
+        AddressSimilarity y = new AddressSimilarity(b);
         System.err.println ("Score = " + x.similarTo(y));
     }
 }

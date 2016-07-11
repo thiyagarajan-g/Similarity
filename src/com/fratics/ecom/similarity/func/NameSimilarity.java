@@ -30,8 +30,12 @@ public class NameSimilarity extends Similarable{
     }
 
     public static void main(String[] args) {
-        NameSimilarity x = new NameSimilarity("Siva Rama Krishnan");
-        NameSimilarity y = new NameSimilarity("SivaKrish R");
+        String a = "Siva Rama Krishnan";
+        String b = "SivaKrish R";
+        System.err.println("Names to compare --> " + a + " -VS- " + b);
+        System.err.println();
+        NameSimilarity x = new NameSimilarity(a);
+        NameSimilarity y = new NameSimilarity(b);
         System.err.println ("Score = " + x.similarTo(y));
     }
 }
