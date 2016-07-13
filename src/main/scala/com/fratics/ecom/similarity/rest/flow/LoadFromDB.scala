@@ -22,7 +22,7 @@ object LoadFromDB extends FlowObject {
       cred match {
         case Some(x) => {
           SimilarityUtils.validateServerAdmin(x) match {
-            case true => sendSystemMsg(OK, "Successfully Dumped Data to DB")
+            case true => sendSystemMsg(OK, "Successfully Loaded Data from DB")
             case false => sendSystemMsg(Unauthorized, "Authentication Failure")
           }
         }
