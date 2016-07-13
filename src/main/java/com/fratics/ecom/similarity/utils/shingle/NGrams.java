@@ -9,9 +9,19 @@ public class NGrams {
 
     private ArrayList<String> nGrams = new ArrayList<String>();
 
+    public static void main(String[] args) {
+        NGrams ng = new NGrams();
+        ng.generateNGrams("helloworld", 3);
+        ng.printNGrams();
+        ng.clear();
+        System.out.println("========================");
+        ng.generateNGrams("helloworld", 2);
+        ng.printNGrams();
+    }
+
     public void generateNGrams(String str, int n) {
 
-        if(str.length() < n){
+        if (str.length() < n) {
             throw new IllegalArgumentException("String " + str + " length is less then NGram lenght ::" + n);
         }
 
@@ -36,21 +46,11 @@ public class NGrams {
         }
     }
 
-    public ArrayList<String> getnGrams(){
+    public ArrayList<String> getnGrams() {
         return nGrams;
     }
 
-    public void clear(){
+    public void clear() {
         nGrams.clear();
-    }
-
-    public static void main(String[] args) {
-        NGrams ng = new NGrams();
-        ng.generateNGrams("helloworld", 3);
-        ng.printNGrams();
-        ng.clear();
-        System.out.println("========================");
-        ng.generateNGrams("helloworld", 2);
-        ng.printNGrams();
     }
 }

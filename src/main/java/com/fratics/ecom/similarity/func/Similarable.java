@@ -38,21 +38,21 @@ public abstract class Similarable {
         // minC = minCardinality (a1,a2)
         // xor_a1a2 = a1 xor a2;
         // score = 1 - (xor_a1a2 bitwise_and minC / minC)
-        int minC = ( o.getBitSet().cardinality() < this.bitSet.cardinality() ) ? o.getBitSet().cardinality() : this.bitSet.cardinality();
+        int minC = (o.getBitSet().cardinality() < this.bitSet.cardinality()) ? o.getBitSet().cardinality() : this.bitSet.cardinality();
 
-        System.err.println("minc = " +  minC);
+        System.err.println("minc = " + minC);
 
         BitSet xor = (BitSet) this.bitSet.clone();
         xor.xor(o.getBitSet());
 
-        System.err.println("xor cardinality = " +  xor.cardinality());
+        System.err.println("xor cardinality = " + xor.cardinality());
 
         BitSet xor_minc = (BitSet) xor.clone();
         xor_minc.and((o.getBitSet().cardinality() < this.bitSet.cardinality()) ? o.getBitSet() : this.bitSet);
 
-        System.err.println("xor and minC cardinality = " +  xor_minc.cardinality());
+        System.err.println("xor and minC cardinality = " + xor_minc.cardinality());
 
-        double score = 1.0 - ( xor_minc.cardinality() * 1.0 / minC );
+        double score = 1.0 - (xor_minc.cardinality() * 1.0 / minC);
 
         return score;
     }

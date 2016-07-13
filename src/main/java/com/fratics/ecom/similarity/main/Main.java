@@ -7,9 +7,9 @@ import com.fratics.ecom.similarity.func.PhoneSimilarity;
 
 public class Main {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-        String [] s = { "dummy", "main"};
+        String[] s = {"dummy", "main"};
         System.err.println("Similarity Analysis");
         System.err.println("--------------------");
         System.err.println("Address Similarity:-");
@@ -27,5 +27,5 @@ public class Main {
         System.err.println("Phone Similarity:-");
         System.err.println("-------------------");
         PhoneSimilarity.main(s);
-	}
+    }
 }
