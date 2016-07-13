@@ -28,9 +28,9 @@ object SimilarityServer extends App {
   //Server Routes Definition
   val routes = {
     logRequestResult("similarity-rest-server") {
-      pathPrefix("similarityServices" / "v1") {
+      pathPrefix("similarityservices" / "v1") {
         //Definitions of routes for CAP Session Services.
-        pathSuffix("verifyOrder") {
+        pathSuffix("verifyorder") {
           optionalHeaderValueByName("X-REQ-OBJ") { ost =>
             complete {
               logger.info("Execting Verify Order API Flow")
@@ -38,7 +38,7 @@ object SimilarityServer extends App {
             }
           }
         } ~
-          pathSuffix("dumpToDB") {
+          pathSuffix("dumptodb") {
             extractRequest { req =>
               complete {
                 logger.info("Execting DumpToDB() API Flow")
@@ -46,7 +46,7 @@ object SimilarityServer extends App {
               }
             }
           } ~
-          pathSuffix("loadFromDB") {
+          pathSuffix("loadfromdb") {
             extractRequest { req =>
               complete {
                 logger.info("Execting loadFromDB() API Flow")
