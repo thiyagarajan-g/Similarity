@@ -6,7 +6,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings}
 import akka.util.Timeout
-import com.fratics.ecom.similarity.rest.flow.{DumpToDB, LoadFromDB, VerifyOrder}
+import com.fratics.ecom.similarity.rest.flow.{SaveToDB, LoadFromDB, VerifyOrder}
 import com.fratics.ecom.similarity.utils.{SimilarityServerContext, SimilarityUtils}
 import com.typesafe.config.ConfigFactory
 
@@ -31,18 +31,20 @@ object SimilarityServer extends App {
       pathPrefix("similarityservices" / "v1") {
         //Definitions of routes for CAP Session Services.
         pathSuffix("verifyorder") {
-          optionalHeaderValueByName("X-REQ-OBJ") { ost =>
+          optionalHeaderValueByName("X-REQ-OBJ") { inp =>
             complete {
-              logger.info("Execting Verify Order API Flow")
-              VerifyOrder.processFlow(Array(ost), 1)
+              logger.info("Execting VerifyOrder() API Flow")
+              VerifyOrder.processFlow(Array(inp), 1)
             }
           }
         } ~
-          pathSuffix("dumptodb") {
+          pathSuffix("savetodb") {
             extractRequest { req =>
-              complete {
-                logger.info("Execting DumpToDB() API Flow")
-                DumpToDB.processFlow(Array(SimilarityUtils.getCredentials(req)), 1)
+              optionalHeaderValueByName("X-REQ-OBJ") { inp =>
+                complete {
+                  logger.info("Execting DumpToDB() API Flow")
+                  SaveToDB.processFlow(Array(SimilarityUtils.getCredentials(req),inp), 1)
+                }
               }
             }
           } ~
