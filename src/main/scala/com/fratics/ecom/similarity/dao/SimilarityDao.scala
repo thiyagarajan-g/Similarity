@@ -62,15 +62,15 @@ trait SimilarityDao extends MongoDao with SimilarityProtocols{
     true
   }
 
-  def verifyOrder(request: Request) : String = {
+  def verifyOrder(request: Request) : Response = {
     var res = MutableList[ResponseEntity]()
     requestMap.get(request.pincode) match{
       case Some(x) => x.toSeq.foreach{ a =>
         val y = new SimilarityComparator().compare(request, a);
         res += y
       }
-      case None => Response("Success", List()).toJson.compactPrint
+      case None => Response("Success", request, List())
     }
-    Response("Success", res.toList).toJson.compactPrint
+    Response("Success", request, res.toList)
   }
 }

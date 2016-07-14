@@ -16,33 +16,38 @@ object SimilarityResponse extends SimilarityProtocols {
 
 
   //Handle Error and send Err Msg to Client
-  def handleError(e: Exception, errMsg: String): HttpResponse = {
+  def handleError(request: Request, e: Exception, errMsg: String): HttpResponse = {
     //e.printStackTrace()
     logger.error(s"Error Occured --> ${errMsg} with Exception --> ${e.getMessage}")
-    HttpResponse(status = InternalServerError, entity = s"${errMsg} : ${e}\n")
+    HttpResponse(status = InternalServerError,
+      headers = List(RawHeader(reqidHeaderName, request.reqid.toJson.compactPrint)),
+      entity = s"${errMsg} : ${e}\n")
   }
 
   //Send Success to Client with status Msg.
-  def sendSuccess(req: Request, statusMsg: String): HttpResponse = sendCustom(OK, req, statusMsg)
+  def sendSuccess(request: Request, response: Response): HttpResponse = sendCustom(OK, request, response)
 
   //Send Custom Msg to Client
-  def sendCustom(sc: StatusCode, req: Request, statusMsg: String): HttpResponse = {
-    logger.info(s"Sending a Custom Msg to Client -> ${statusMsg} - Session Token --> ${req}")
+  def sendCustom(sc: StatusCode, request: Request, response: Response): HttpResponse = {
+    val x = response.toJson.compactPrint
+    logger.info(s"Sending a Custom Msg to Client -> ${response.status} - Response --> ${x}")
     HttpResponse(status = sc,
-      headers = List(RawHeader(reqidHeaderName, req.reqid.toJson.compactPrint)),
-      entity = s"${statusMsg}\n")
+      headers = List(RawHeader(reqidHeaderName, request.reqid.toJson.compactPrint)),
+      entity = s"${x}\n")
   }
 
   //Send Bad Request to Client
-  def sendBadRequest(statusMsg: String): HttpResponse = {
+  def sendBadRequest(request: Request, statusMsg: String): HttpResponse = {
     logger.info(s"Sending BadRequest to Client -> ${statusMsg}")
-    HttpResponse(BadRequest, entity = s"${statusMsg}\n")
+    HttpResponse(BadRequest,
+      headers = List(RawHeader(reqidHeaderName, request.reqid.toJson.compactPrint)),
+      entity = Response(s"${statusMsg}", request, List()).toJson.compactPrint)
   }
 
   //System Information Dump for Admin
-  def sendSystemMsg(sc: StatusCode, statusMsg: String): HttpResponse = {
+  def sendSystemMsg(request: Request, sc: StatusCode, statusMsg: String): HttpResponse = {
     logger.info(s"Sending System Msg to Client -> ${statusMsg}")
-    HttpResponse(sc, entity = s"${statusMsg}\n")
+    HttpResponse(sc, entity = Response(s"${statusMsg}", request, List()).toJson.compactPrint)
   }
 
 }

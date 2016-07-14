@@ -24,7 +24,7 @@ object LoadFromDB extends FlowObject {
         case Some(x) => {
           SimilarityUtils.validateServerAdmin(x) match {
             case true =>
-            case false => sendSystemMsg(Unauthorized, "Authentication Failure")
+            case false => sendSystemMsg(request, Unauthorized, "Authentication Failure")
           }
         }
         case None => throw new BadRequestException("Empty Credentials")
@@ -33,21 +33,21 @@ object LoadFromDB extends FlowObject {
       pincodeList.isEmpty match{
         case true => {
           loadData match {
-            case true => sendSystemMsg(OK, "Successfully Loaded Data from DB")
-            case false => sendBadRequest("Failed to load Data from DB")
+            case true => sendSystemMsg(request, OK, "Successfully Loaded Data from DB")
+            case false => sendBadRequest(request, "Failed to load Data from DB")
           }
         }
         case false => {
           loadData(pincodeList) match {
-            case true => sendSystemMsg(OK, "Successfully Loaded Data from DB")
-            case false => sendBadRequest("Failed to load Data from DB")
+            case true => sendSystemMsg(request, OK, "Successfully Loaded Data from DB")
+            case false => sendBadRequest(request, "Failed to load Data from DB")
           }
         }
       }
 
     } catch {
-      case b: BadRequestException => sendBadRequest(b.getMessage)
-      case e: Exception => handleError(e, "Unable to Load Data from DB")
+      case b: BadRequestException => sendBadRequest(request, b.getMessage)
+      case e: Exception => handleError(request, e, "Unable to Load Data from DB")
     }
   }
 }

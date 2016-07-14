@@ -23,7 +23,7 @@ object SaveToDB extends FlowObject {
         case Some(x) => {
           SimilarityUtils.validateServerAdmin(x) match {
             case true =>
-            case false => sendSystemMsg(Unauthorized, "Authentication Failure")
+            case false => sendSystemMsg(request, Unauthorized, "Authentication Failure")
           }
         }
         case None => throw new BadRequestException("Empty Credentials")
@@ -32,13 +32,13 @@ object SaveToDB extends FlowObject {
       unMarshallRequestToken(inp)
 
       save(request) match {
-        case true => sendSystemMsg(OK, "Successfully Saved Data to DB")
-        case false => sendBadRequest("Failed to Save Data to DB")
+        case true => sendSystemMsg(request, OK, "Successfully Saved Data to DB")
+        case false => sendBadRequest(request, "Failed to Save Data to DB")
       }
 
     } catch {
-      case b: BadRequestException => sendBadRequest(b.getMessage)
-      case e: Exception => handleError(e, "Unable to Save Data To DB")
+      case b: BadRequestException => sendBadRequest(request, b.getMessage)
+      case e: Exception => handleError(request, e, "Unable to Save Data To DB")
     }
   }
 }

@@ -7,7 +7,7 @@ import reactivemongo.bson.{BSONDocument, BSONDocumentReader, BSONDocumentWriter}
 case class Credentials(user: String, pass: String)
 case class Weights(addressSimilarity: Double, emailSimilarity: Double, iPSimilarity: Double, nameSimilarity: Double, phoneSimilarity: Double)
 case class ResponseEntity(request: Request, weights: Weights)
-case class Response(status : String, requests: List[ResponseEntity])
+case class Response(status : String, queriedRequest : Request, matchingRequests: List[ResponseEntity])
 
 case class Request(reqid: String, userid: String, name: String, address: String, pincode: String, email: String, phone: String, ipinfo: String, deviceid: String, category: String, subcategory: String)
 object Request {
