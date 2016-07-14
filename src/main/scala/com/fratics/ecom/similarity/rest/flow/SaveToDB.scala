@@ -7,7 +7,7 @@ import com.fratics.ecom.similarity.exception.BadRequestException
 import com.fratics.ecom.similarity.utils.SimilarityResponse._
 import com.fratics.ecom.similarity.utils._
 
-object SaveToDB extends FlowObject{
+object SaveToDB extends FlowObject {
 
   override def processFlow(any: Array[Any], noArg: Int): ToResponseMarshallable = {
 

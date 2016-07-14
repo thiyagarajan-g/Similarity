@@ -3,19 +3,19 @@ package com.fratics.ecom.similarity.rest.flow
 import akka.event.Logging
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.StatusCodes._
-import com.fratics.ecom.similarity.dao.SimilarityDao
 import com.fratics.ecom.similarity.exception.BadRequestException
 import com.fratics.ecom.similarity.utils.SimilarityResponse._
 import com.fratics.ecom.similarity.utils._
 
 
-object LoadFromDB extends FlowObject{
+object LoadFromDB extends FlowObject {
 
   override def processFlow(any: Array[Any], noArg: Int): ToResponseMarshallable = {
 
     try {
       lazy val logger = Logging(SimilarityServerContext.system, getClass)
       lazy val cred = any(0).asInstanceOf[Option[Credentials]]
+      lazy val pincodeList = any(1).asInstanceOf[String].split(",").toList
 
       logger.info(s"In LoadFromDB() Flow, Cred --> ${cred}")
 
@@ -30,9 +30,19 @@ object LoadFromDB extends FlowObject{
         case None => throw new BadRequestException("Empty Credentials")
       }
 
-      loadData match {
-        case true => sendSystemMsg(OK, "Successfully Loaded Data from DB")
-        case false => sendBadRequest("Failed to load Data from DB")
+      pincodeList.isEmpty match{
+        case true => {
+          loadData match {
+            case true => sendSystemMsg(OK, "Successfully Loaded Data from DB")
+            case false => sendBadRequest("Failed to load Data from DB")
+          }
+        }
+        case false => {
+          loadData(pincodeList) match {
+            case true => sendSystemMsg(OK, "Successfully Loaded Data from DB")
+            case false => sendBadRequest("Failed to load Data from DB")
+          }
+        }
       }
 
     } catch {

@@ -1,10 +1,6 @@
 package com.fratics.ecom.similarity.main;
 
-import com.fratics.ecom.similarity.func.AddressSimilarity;
-import com.fratics.ecom.similarity.func.EmailSimilarity;
-import com.fratics.ecom.similarity.func.IPSimilarity;
-import com.fratics.ecom.similarity.func.NameSimilarity;
-import com.fratics.ecom.similarity.func.PhoneSimilarity;
+import com.fratics.ecom.similarity.func.*;
 
 public class Main {
 
@@ -32,5 +28,5 @@ public class Main {
         System.err.println("IP Similarity:-");
         System.err.println("---------------");
         IPSimilarity.main(s);
-	}
+    }
 }

@@ -6,7 +6,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings}
 import akka.util.Timeout
-import com.fratics.ecom.similarity.rest.flow.{SaveToDB, LoadFromDB, VerifyOrder}
+import com.fratics.ecom.similarity.rest.flow.{LoadFromDB, SaveToDB, VerifyOrder}
 import com.fratics.ecom.similarity.utils.{SimilarityServerContext, SimilarityUtils}
 import com.typesafe.config.ConfigFactory
 
@@ -43,16 +43,18 @@ object SimilarityServer extends App {
               optionalHeaderValueByName("X-REQ-OBJ") { inp =>
                 complete {
                   logger.info("Execting DumpToDB() API Flow")
-                  SaveToDB.processFlow(Array(SimilarityUtils.getCredentials(req),inp), 1)
+                  SaveToDB.processFlow(Array(SimilarityUtils.getCredentials(req), inp), 2)
                 }
               }
             }
           } ~
           pathSuffix("loadfromdb") {
             extractRequest { req =>
-              complete {
-                logger.info("Execting loadFromDB() API Flow")
-                LoadFromDB.processFlow(Array(SimilarityUtils.getCredentials(req)), 1)
+              parameter("pincodelist") { pincodelist =>
+                complete {
+                  logger.info("Execting loadFromDB() API Flow")
+                  LoadFromDB.processFlow(Array(SimilarityUtils.getCredentials(req), pincodelist), 2)
+                }
               }
             }
           }

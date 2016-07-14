@@ -19,6 +19,8 @@ object VerifyOrder extends FlowObject {
 
       unMarshallRequestToken(inp)
 
+      verifyOrder(request)
+
       //Send the UnMarshalled Token Back
       sendSuccess(request, "Order Verified Successfully")
 

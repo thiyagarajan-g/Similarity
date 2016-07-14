@@ -1,12 +1,15 @@
 package com.fratics.ecom.similarity.utils
 
+import com.fratics.ecom.similarity.func._
 import reactivemongo.bson.{BSONDocument, BSONDocumentReader, BSONDocumentWriter}
 
 //Value Object used.
 case class Credentials(user: String, pass: String)
-case class Response(requests: List[Request])
-case class Request(reqid: String, userid: String, name: String, address: String, pincode: String, email: String, phone: String, ipinfo: String, deviceid: String, category: String, subcategory: String)
+case class Weights(addressSimilarity: Double, emailSimilarity: Double, iPSimilarity: Double, nameSimilarity: Double, phoneSimilarity: Double)
+case class ResponseEntity(request: Request, weights: Weights)
+case class Response(status : String, requests: List[ResponseEntity])
 
+case class Request(reqid: String, userid: String, name: String, address: String, pincode: String, email: String, phone: String, ipinfo: String, deviceid: String, category: String, subcategory: String)
 object Request {
 
   implicit object SimilarityBSONReader extends BSONDocumentReader[Request] {
@@ -39,5 +42,16 @@ object Request {
         "deviceid" -> entity.deviceid,
         "category" -> entity.category,
         "subcategory" -> entity.subcategory)
+  }
+
+}
+
+case class Similarity(addressSimilarity: AddressSimilarity, emailSimilarity: EmailSimilarity, iPSimilarity: IPSimilarity,
+                      nameSimilarity: NameSimilarity,phoneSimilarity: PhoneSimilarity, request: Request)
+
+object Similarity{
+  def convert(request: Request) : Similarity = {
+    new Similarity( new AddressSimilarity(request.address), new EmailSimilarity(request.email), new IPSimilarity(request.ipinfo),
+    new NameSimilarity(request.name), new PhoneSimilarity(request.phone), request)
   }
 }
