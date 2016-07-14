@@ -24,7 +24,7 @@ object LoadFromDB extends FlowObject {
         case Some(x) => {
           SimilarityUtils.validateServerAdmin(x) match {
             case true =>
-            case false => sendSystemMsg(request, Unauthorized, "Authentication Failure")
+            case false => sendSystemMsg(null, Unauthorized, "Authentication Failure")
           }
         }
         case None => throw new BadRequestException("Empty Credentials")
